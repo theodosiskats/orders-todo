@@ -29,7 +29,7 @@ The main purpose of this code is to create and manage tasks in a Todo List. In t
 
 <div style="text-align:center">
   <img src="flowchart/chart.png" />
-</div>
+</div> 
 
 ## Note
 This code is a sample implementation and should not be used in production environments without appropriate modifications and testing. Additionally, it assumes that the user has appropriate permissions to create and manage Todo Lists using the Graph API.
