@@ -13,6 +13,8 @@ The main purpose of this code is to create and manage tasks in a Todo List. In t
 - Microsoft Graph .NET SDK (version 1.0)
 - Azure.Identity package (version 1.8)
 
+
+
 ## Usage
 - Clone the repository to your local machine.
 - Open the solution in Visual Studio and update the `tenantId` and `clientId` variables with your Azure AD tenant and client IDs respectively.
@@ -24,6 +26,10 @@ The main purpose of this code is to create and manage tasks in a Todo List. In t
 - If the generated shipping date falls on weekend then it is rescheduled for the following Mondays.
 - The AddOrderToMyLists() method adds the new order and the restocking task (if applicable) to the Orders and Stock TodoLists using the PostAsync() method on the Tasks endpoint.
 - The code will open a browser window prompting the user to sign in with their Azure AD credentials. Once authenticated, the code will access the Graph API and create a new Todo List named "Orders" (if it doesn't exist), and add a new task to the list with the random generated order details and will create a Stock task if the item ordered is not in stock.
+
+<div style="text-align:center">
+  <img src="flowchart/chart.png" />
+</div>
 
 ## Note
 This code is a sample implementation and should not be used in production environments without appropriate modifications and testing. Additionally, it assumes that the user has appropriate permissions to create and manage Todo Lists using the Graph API.
