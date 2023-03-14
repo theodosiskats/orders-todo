@@ -13,7 +13,9 @@ The main purpose of this code is to create and manage tasks in a Todo List. In t
 - Microsoft Graph .NET SDK (version 1.0)
 - Azure.Identity package (version 1.8)
 
-
+<div style="text-align:center">
+  <img src="flowchart/chart.png" />
+</div> 
 
 ## Usage
 - Clone the repository to your local machine.
