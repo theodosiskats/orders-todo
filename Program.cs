@@ -52,12 +52,9 @@ async Task<TodoTaskList> FindOrCreateStockList(TodoTaskListCollectionResponse to
 {
     if (todoListCollection.Value.Count > 0)
     {
-        foreach (var todoList in todoListCollection.Value)
+        foreach (var todoList in todoListCollection.Value.Where(todoList => todoList.DisplayName == "Stock"))
         {
-            if (todoList.DisplayName == "Stock")
-            {
-                return todoList;
-            }
+            return todoList;
         }
     }
     // If the "Stock" list does not exist, create it
@@ -72,30 +69,26 @@ async Task<TodoTaskList> FindOrCreateStockList(TodoTaskListCollectionResponse to
 Order GenerateNewOrder()
 {
     var products = new List<string> { "Product A", "Product B", "Product C", "Product D", "Product E" };
-    string randomProduct = products[new Random().Next(products.Count)];
-    int orderNumber = new Random().Next(001, 100);
-    int quantity = new Random().Next(1, 10);
-    bool inStock = new Random().Next(2) != 0;;
-    DateTime currentDate = DateTime.Now;
+    var randomProduct = products[new Random().Next(products.Count)];
+    var orderNumber = new Random().Next(001, 100);
+    var quantity = new Random().Next(1, 10);
+    var inStock = new Random().Next(2) != 0;;
+    var currentDate = DateTime.Now;
     DateTime shippingDate;
-    
-    if (inStock)
-    {
-        shippingDate = currentDate.AddDays(3);
-    }
-    else
-    {
-        shippingDate = currentDate.AddDays(7);
-    }
 
-    // Check if the shipping date is on a Saturday or Sunday
-    if (shippingDate.DayOfWeek == DayOfWeek.Saturday)
+    shippingDate = currentDate.AddDays(inStock ? 3 : 7);
+
+    switch (shippingDate.DayOfWeek)
     {
-        shippingDate = shippingDate.AddDays(2);
-    }
-    else if (shippingDate.DayOfWeek == DayOfWeek.Sunday)
-    {
-        shippingDate = shippingDate.AddDays(1);
+        // Check if the shipping date is on a Saturday or Sunday
+        case DayOfWeek.Saturday:
+            shippingDate = shippingDate.AddDays(2);
+            break;
+        case DayOfWeek.Sunday:
+            shippingDate = shippingDate.AddDays(1);
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
     }
     
     var newOrder = new TodoTask
@@ -132,10 +125,5 @@ async Task AddOrderToMyLists(string ordersListId,string stockListId, Order newOr
 {
     await graphClient.Me.Todo.Lists[$"{ordersListId}"].Tasks.PostAsync(newOrderInfo.OrderInfo);
     await graphClient.Me.Todo.Lists[$"{stockListId}"].Tasks.PostAsync(newOrderInfo.StockInfo);
-}
-
-public class Order
-{
-    public TodoTask OrderInfo { get; set; }
-    public TodoTask StockInfo { get; set; }
+    Console.WriteLine("App task completed");
 }
